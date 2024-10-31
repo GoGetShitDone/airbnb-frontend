@@ -46,3 +46,28 @@ export interface IReview {
     rating: number;
     user: IRoomOwner;
 }
+
+
+export interface IUser {
+    last_login: string;
+    username: string;
+    email: string;
+    date_joined: string;
+    avatar: string;
+    name: string;
+    is_host: boolean;
+    gender: string;
+    language: string;
+    currency: string;
+}
+
+
+declare module 'js-cookie' {
+    interface CookiesStatic {
+        get: (key: string) => string | undefined;
+        set: (key: string, value: string | object, options?: object) => void;
+        remove: (key: string, options?: object) => void;
+    }
+    const Cookies: CookiesStatic;
+    export default Cookies;
+}

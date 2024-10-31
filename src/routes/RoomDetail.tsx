@@ -21,7 +21,7 @@ import { IReview, IRoomDetail } from "../types";
 export default function RoomDetail() {
     const { roomPk } = useParams();
 
-    const { isLoading, data } = useQuery({
+    const { isLoading, data } = useQuery<IRoomDetail>({
         queryKey: ["rooms", roomPk],
         queryFn: () => getRoom(roomPk),
         enabled: !!roomPk,
@@ -38,6 +38,8 @@ export default function RoomDetail() {
         return <Skeleton height="100px" />;
     }
 
+    // console.log("Room data:", data);
+
     return (
         <Box
             pb={40}
@@ -47,7 +49,7 @@ export default function RoomDetail() {
                 lg: 40,
             }}
         >
-        <Skeleton height={"43px"} width="25%" isLoaded={!isLoading}>
+        <Skeleton height={"43px"} width="50%" isLoaded={!isLoading}>
             <Heading>{data?.name}</Heading>
         </Skeleton>
         <Grid
@@ -60,27 +62,41 @@ export default function RoomDetail() {
             templateColumns={"repeat(4, 1fr)"}
         >
             {[0, 1, 2, 3, 4].map((index) => (
-            <GridItem
-                colSpan={index === 0 ? 2 : 1}
-                rowSpan={index === 0 ? 2 : 1}
-                overflow={"hidden"}
-                key={index}
-            >
-                <Skeleton isLoaded={!isLoading} h="100%" w="100%">
-                <Image
-                    objectFit={"cover"}
-                    w="100%"
-                    h="100%"
-                    src={data?.photos[index].file}
-                />
-                </Skeleton>
-            </GridItem>
+                <GridItem
+                    colSpan={index === 0 ? 2 : 1}
+                    rowSpan={index === 0 ? 2 : 1}
+                    overflow={"hidden"}
+                    key={index}
+                >
+                    <Skeleton isLoaded={!isLoading} h="100%" w="100%">
+                        {data?.photos[index] ? (
+                            <Image
+                                objectFit={"cover"}
+                                w="100%"
+                                h="100%"
+                                src={data.photos[index].file}
+                            />
+                        ) : (
+                            // 사진이 없는 경우 회색 배경의 빈 박스 표시
+                            <Box 
+                                w="100%" 
+                                h="100%" 
+                                bg="gray.200"
+                                display="flex"
+                                alignItems="center"
+                                justifyContent="center"
+                            >
+                                <Text color="gray.500">No Image</Text>
+                            </Box>
+                        )}
+                    </Skeleton>
+                </GridItem>
             ))}
         </Grid>
-        <HStack width={"40%"} justifyContent={"space-between"} mt={10}>
+        <HStack width={"50%"} justifyContent={"space-between"} mt={10}>
             <VStack alignItems={"flex-start"}>
             <Skeleton isLoaded={!isLoading} height={"30px"}>
-                <Heading fontSize={"2xl"}>
+                <Heading fontSize={"xl"}>
                 House hosted by {data?.owner.name}
                 </Heading>
             </Skeleton>
