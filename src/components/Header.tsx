@@ -63,53 +63,72 @@ export default function Header() {
 
     return (
         <Stack
-            justifyContent={"space-between"}
+            w="full"
+            direction="row"
+            justifyContent="space-between"
             alignItems="center"
-            py={5}
-            px={40}
-            direction={{
-                sm: "column",
-                md: "row",
-            }}
-            spacing={{
-                sm: 4,
-                md: 0,
+            py={4}
+            px={{
+                base: 4,
+                md: 8,
+                lg: 16
             }}
             borderBottomWidth={1}
+            spacing={0}
         >
             <Box color={logoColor}>
-            <Link to={"/"}>
-                <FaAirbnb size={"48"} />
-            </Link>
+                <Link to={"/"}>
+                    <FaAirbnb size={"48"} />
+                </Link>
             </Box>
+            
             <HStack spacing={2}>
-            <IconButton
-                onClick={toggleColorMode}
-                variant={"ghost"}
-                aria-label="Toggle dark mode"
-                icon={<Icon />}
-            />
-            {!userLoading ? (
-            !isLoggedIn ? (
-                <>
-                <Button onClick={onLoginOpen}>Log in</Button>
-                <LightMode>
-                    <Button onClick={onSignUpOpen} colorScheme={"red"}>
-                    Sign up
-                    </Button>
-                </LightMode>
-                </>
-            ) : (
-                <Menu>
-                    <MenuButton>
-                        <Avatar name={user?.name} src={user?.avatar} size={"md"} />
-                    </MenuButton>
-                    <MenuList>
-                        <MenuItem onClick={onLogOut}>Log out</MenuItem>
-                    </MenuList>
-                </Menu>
-            )
-            ) : null}
+                <IconButton
+                    onClick={toggleColorMode}
+                    variant={"ghost"}
+                    aria-label="Toggle dark mode"
+                    icon={<Icon />}
+                />
+                {!userLoading ? (
+                    !isLoggedIn ? (
+                        <>
+                            <Button 
+                                onClick={onLoginOpen}
+                                size={{
+                                    base: "md",
+                                    sm: "md"
+                                }}
+                            >
+                                Log in</Button>
+                            <LightMode>
+                                <Button 
+                                    onClick={onSignUpOpen} 
+                                    colorScheme={"red"}
+                                    size={{
+                                        base: "md",
+                                        sm: "md"
+                                    }}
+                                >
+                                    Sign up
+                                </Button>
+                            </LightMode>
+                        </>
+                    ) : (
+                        <Menu>
+                            <MenuButton>
+                                <Avatar name={user?.name} src={user?.avatar} size={"md"} />
+                            </MenuButton>
+                            <MenuList>
+                                {user?.is_host ? (
+                                    <Link to="/rooms/upload">
+                                        <MenuItem>Upload room</MenuItem>
+                                    </Link>
+                                ) : null}
+                                <MenuItem onClick={onLogOut}>Log out</MenuItem>
+                            </MenuList>
+                        </Menu>
+                    )
+                ) : null}
             </HStack>
             <LoginModal isOpen={isLoginOpen} onClose={onLoginClose} />
             <SignUpModal isOpen={isSignUpOpen} onClose={onSignUpClose} />

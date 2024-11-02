@@ -1,73 +1,85 @@
 export interface IRoomPhotoPhoto {
-    pk: string;
-    file: string;
-    description: string;
+  pk: string;
+  file: string;
+  description: string;
 }
+
 export interface IRoomList {
-    pk: number;
-    name: string;
-    country: string;
-    city: string;
-    price: number;
-    rating: number;
-    is_owner: boolean;
-    photos: IRoomPhotoPhoto[];
+  pk: number;
+  name: string;
+  country: string;
+  city: string;
+  price: number;
+  rating: number;
+  is_owner: boolean;
+  photos: IRoomPhotoPhoto[];
 }
+
 export interface IRoomOwner {
-    name: string;
-    avatar: string;
-    username: string;
+  name: string;
+  avatar: string;
+  username: string;
 }
+
 export interface IAmenity {
-    name: string;
-    description: string;
+  pk: number;
+  name: string;
+  description: string;
 }
+
+export interface ICategory {
+  pk: number;
+  name: string;
+  kind: string;
+}
+
 export interface IRoomDetail extends IRoomList {
-    created_at: string;
-    updated_at: string;
-    rooms: number;
-    toilets: number;
-    description: string;
-    address: string;
-    pet_friendly: true;
-    kind: string;
-    is_owner: boolean;
-    is_liked: boolean;
-    category: {
-        name: string;
-        kind: string;
-    };
-    owner: IRoomOwner;
-    amenities: IAmenity[];
+  id: number;
+  created_at: string;
+  updated_at: string;
+  rooms: number;
+  toilets: number;
+  description: string;
+  address: string;
+  pet_friendly: true;
+  kind: string;
+  is_owner: boolean;
+  is_liked: boolean;
+  category: ICategory;
+  owner: IRoomOwner;
+  amenities: IAmenity[];
 }
 
 export interface IReview {
-    payload: string;
-    rating: number;
-    user: IRoomOwner;
+  payload: string;
+  rating: number;
+  user: IRoomOwner;
 }
-
 
 export interface IUser {
-    last_login: string;
-    username: string;
-    email: string;
-    date_joined: string;
-    avatar: string;
-    name: string;
-    is_host: boolean;
-    gender: string;
-    language: string;
-    currency: string;
+  last_login: string;
+  username: string;
+  email: string;
+  date_joined: string;
+  avatar: string;
+  name: string;
+  is_host: boolean;
+  gender: string;
+  language: string;
+  currency: string;
 }
 
-
-declare module 'js-cookie' {
-    interface CookiesStatic {
-        get: (key: string) => string | undefined;
-        set: (key: string, value: string | object, options?: object) => void;
-        remove: (key: string, options?: object) => void;
-    }
-    const Cookies: CookiesStatic;
-    export default Cookies;
+export interface IUploadRoomVariables {
+  name: string;
+  country: string;
+  city: string;
+  price: number;
+  rooms: number;
+  toilets: number;
+  description: string;
+  address: string;
+  pet_friendly: boolean;
+  kind: string;
+  amenities: number[];  // 추가된 필드
+  category: number;
 }
