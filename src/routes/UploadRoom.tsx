@@ -34,7 +34,7 @@ import { useNavigate } from "react-router-dom";
 
 export default function UploadRoom() {
     const { register, handleSubmit } = useForm<IUploadRoomVariables>();
-    const [selectedAmenities, setSelectedAmenities] = useState<number[]>([]);
+    const [selectedAmenities] = useState<number[]>([]);
     const toast = useToast();
     const navigate = useNavigate();
     
@@ -92,23 +92,9 @@ export default function UploadRoom() {
         mutation.mutate(formData);
     };
 
-    const handleAmenityChange = (amenityPk: number, isChecked: boolean) => {
-        console.log("Handling amenity change:", { amenityPk, isChecked });
-        
-        setSelectedAmenities(prev => {
-            const newSelection = isChecked 
-                ? [...prev, amenityPk]
-                : prev.filter(id => id !== amenityPk);
-            
-            console.log("New selection:", newSelection);
-            return newSelection;
-        });
-    };
-
-
     return (
         <ProtectedPage>
-            <Box pb={40} mt={10} px={{ base: 10, lg: 40 }}>
+            <Box pb={40} mt={24} px={{ base: 10, lg: 40 }}>
                 <Container>
                     <Heading textAlign={"center"}>Upload Room</Heading>
                     <VStack spacing={10} as="form" onSubmit={handleSubmit(onSubmit)} mt={5}>
@@ -181,23 +167,20 @@ export default function UploadRoom() {
                             <FormHelperText>What category describes your room?</FormHelperText>
                         </FormControl>
                         <FormControl>
-                            <FormLabel>Amenities</FormLabel>
-                            <Grid templateColumns={"1fr 1fr"} gap={5}>
-                                {amenities?.map((amenity) => {
-                                    const isSelected = selectedAmenities.includes(amenity.pk);
-                                    return (
-                                        <Box key={amenity.pk}>
-                                            <Checkbox
-                                                isChecked={isSelected}
-                                                onChange={(e) => handleAmenityChange(amenity.pk, e.target.checked)}
-                                            >
-                                                {amenity.name}
-                                            </Checkbox>
-                                            <FormHelperText>{amenity.description}</FormHelperText>
-                                        </Box>
-                                    );
-                                })}
-                            </Grid>
+                        <FormLabel>Amenities</FormLabel>
+                        <Grid templateColumns={"1fr 1fr"} gap={5}>
+                            {amenities?.map((amenity) => (
+                            <Box key={amenity.pk}>
+                                <Checkbox
+                                value={amenity.pk}
+                                {...register("amenities", { required: true })}
+                                >
+                                {amenity.name}
+                                </Checkbox>
+                                <FormHelperText>{amenity.description}</FormHelperText>
+                            </Box>
+                            ))}
+                        </Grid>
                         </FormControl>
                         {mutation.isError ? <Text color="red.500">Something went wrong</Text> : null}
                         <Button

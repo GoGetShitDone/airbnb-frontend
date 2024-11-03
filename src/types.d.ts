@@ -83,3 +83,20 @@ export interface IUploadRoomVariables {
   amenities: number[];  // 추가된 필드
   category: number;
 }
+
+
+export interface CalendarProps {
+  onChange?: (value: Value) => void;
+  value?: Value;
+  selectRange?: boolean;
+  minDate?: Date;
+  maxDate?: Date;
+  minDetail?: "month" | "year" | "decade" | "century";
+  prev2Label?: string | JSX.Element | null;
+  next2Label?: string | JSX.Element | null;
+}
+
+export interface IBookingDateRange {
+  checkIn: Date;
+  checkOut: Date;
+}
